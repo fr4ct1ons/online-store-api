@@ -29,6 +29,24 @@ public class StoreController : ControllerBase
         return Ok(store);
     }
 
+    [HttpPost("[action]")]
+    public IActionResult LoginStore([FromBody] LoginRequest request)
+    {
+        var store = _applicationStorage.Stores.First(s => s.name == request.username);
+
+        if (store == null)
+        {
+            return NotFound($"Store with name {request.username} not found");
+        }
+
+        if (store.password != request.password)
+        {
+            return Unauthorized();
+        }
+        
+        return Ok(store);
+    }
+
     [HttpGet("[action]")]
     public IActionResult GetStores()
     {
@@ -38,6 +56,11 @@ public class StoreController : ControllerBase
     [HttpPost("[action]")]
     public IActionResult CreateStore([FromBody] CreateStoreRequest request)
     {
+        if (_applicationStorage.Stores.Any(s => s.name == request.name))
+        {
+            return Conflict($"Store with name {request.name} already exists");
+        }
+        
         string name = request.name;
         string description = request.description;
 
@@ -51,7 +74,8 @@ public class StoreController : ControllerBase
             name = name,
             description = description,
             id = Guid.NewGuid(),
-            products = new List<Product>()
+            products = new List<Product>(),
+            password = request.password
         };
         
         _applicationStorage.Stores.Add(store);

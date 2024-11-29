@@ -31,15 +31,39 @@ public class UserController : ControllerBase
 
         return Ok(user);
     }
+    
+    [HttpPost("[action]")]
+    public IActionResult LoginUser([FromBody] LoginRequest request)
+    {
+        var user = _applicationStorage.Users.First(u => u.username == request.username);
+
+        if (user == null)
+        {
+            return NotFound($"User with username {request.username} not found");
+        }
+
+        if (user.password != request.password)
+        {
+            return Unauthorized();
+        }
+        
+        return Ok(user);
+    }
 
     [HttpPost("[action]")]
     public IActionResult CreateUser([FromBody]CreateUserRequest request)
     {
+        if (_applicationStorage.Users.Any(u => u.username == request.name))
+        {
+            return Conflict($"User with name {request.name} already exists");
+        }
+        
         Guid id = Guid.NewGuid();
         User newUser = new User()
         {
             id = id,
-            name = request.name,
+            username = request.name,
+            password = request.password,
             purchases = new List<Purchase>()
         };
 
