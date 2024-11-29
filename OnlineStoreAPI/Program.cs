@@ -15,8 +15,10 @@ builder.Services.AddHostedService<StorageSaver>();
 
 var app = builder.Build();
 
+var useSwagger = Environment.GetEnvironmentVariable("USE_SWAGGER");
+
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
+if(useSwagger != null)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
