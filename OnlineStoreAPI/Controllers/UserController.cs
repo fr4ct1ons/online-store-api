@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using OnlineStoreAPI.Entities;
 using OnlineStoreAPI.Requests;
 using OnlineStoreAPI.Storage;
@@ -18,7 +19,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public IActionResult GetUser(string userId)
+    public IActionResult GetUser([Required] string userId)
     {
         Guid id = Guid.Parse(userId);
 
@@ -73,7 +74,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("[action]")]
-    public IActionResult DeleteUser(string userId)
+    public IActionResult DeleteUser([Required] string userId)
     {
         Guid id = Guid.Parse(userId);
 
