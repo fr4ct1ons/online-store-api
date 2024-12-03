@@ -51,10 +51,18 @@ public class ApplicationStorage
         
         try
         {
+            /*
             if (File.Exists(ProducstFileName))
             {
                 string content = File.ReadAllText(ProducstFileName);
                 Products = JsonSerializer.Deserialize<List<Product>>(content);
+            }
+            
+            */
+
+            foreach (StoreOwner store in Stores)
+            {
+                Products.AddRange(store.products);
             }
         }
         catch (Exception e)

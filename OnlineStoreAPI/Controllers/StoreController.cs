@@ -6,6 +6,8 @@ using OnlineStoreAPI.Storage;
 
 namespace OnlineStoreAPI.Controllers;
 
+[ApiController]
+[Route("[controller]")]
 public class StoreController : ControllerBase
 {
     private readonly ApplicationStorage _applicationStorage;
