@@ -6,5 +6,5 @@ public class Product
     public Guid id { get; set; }
     public string description { get; set; }
     public float price { get; set; }
-    public List<Review> reviews = new List<Review>();
+    public List<Review> reviews { get; set; } = new List<Review>();
 }
