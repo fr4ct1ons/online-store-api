@@ -68,4 +68,13 @@ public class ProductController : ControllerBase
         
         return Ok(review);
     }
+
+    [HttpGet("[action]")]
+    public IActionResult GetRandomProducts(int? count)
+    {
+        Random rnd = new Random(DateTime.Now.Millisecond);
+        var products = _applicationStorage.Products.OrderBy(p => rnd.Next()).Take(count ?? 5);
+
+        return Ok(products);
+    }
 }

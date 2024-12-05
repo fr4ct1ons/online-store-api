@@ -157,4 +157,21 @@ public class StoreController : ControllerBase
             return StatusCode(500);
         }
     }
+    
+    [HttpGet("[action]")]
+    public IActionResult GetRandomStores(int? count)
+    {
+        Random rnd = new Random(DateTime.Now.Millisecond);
+        var stores = _applicationStorage.Stores.OrderBy(s => rnd.Next()).Take(count ?? 5);
+
+        return Ok(stores);
+    }
+
+    [HttpGet("[action]")]
+    public IActionResult SearchStores(string query)
+    {
+        var stores = _applicationStorage.Stores.Where(s => s.name.ToLower().Contains(query.ToLower()));
+
+        return Ok(stores);
+    }
 }
